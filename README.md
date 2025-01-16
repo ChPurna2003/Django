@@ -64,30 +64,7 @@ Login: Use your credentials to log in.
 Chat: Join a chat room and start messaging with other users.
 Directory Structure
 
-Verify
-Copy code
-mychatapp/
-│
-├── accounts/                # User authentication and registration
-│   ├── migrations/          # Database migrations
-│   ├── templates/           # HTML templates for accounts
-│   ├── urls.py              # URL routing for accounts
-│   └── views.py             # Views for handling requests
-│
-├── chat/                    # Chat functionality
-│   ├── migrations/          # Database migrations for chat
-│   ├── templates/           # HTML templates for chat
-│   ├── routing.py           # WebSocket routing
-│   ├── consumers.py         # WebSocket consumers
-│   ├── models.py            # Database models for chat messages
-│   └── views.py             # Views for chat rooms
-│
-├── mychatapp/               # Main project directory
-│   ├── settings.py          # Project settings
-│   ├── urls.py              # Main URL routing
-│   └── asgi.py              # ASGI configuration for Channels
-│
-└── manage.py                # Django management script
+
 Contributing
 Contributions are welcome! Please fork the repository and submit a pull request with your changes.
 
