@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Room</title>
+    <script>
+        const roomName = "{{ room_name }}";  // Pass room name from Django view
+        const chatSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/chat/' + roomName + '/'
+        );
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            document.querySelector('#chat-log').value += (data.message + '\n');
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // Enter key
+                const messageInputDom = document.querySelector('#chat-message-input');
+                const message = messageInputDom.value;
+                chatSocket.send(JSON.stringify({
+                    'message': message
+                }));
+                messageInputDom.value = '';
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="user-list">
+        <h3>Users</h3>
+        <ul>
+            {% for user in users %}
+                <li><a href="{% url 'user_room' user.username %}">{{ user.username }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="chat-messages">
+        <h3>Chat Messages</h3>
+        <div id="chat-log" style="height: 300px; overflow-y: scroll; border: 1px solid #ccc;">
+            {% for message in messages %}
+                <div>
+                    <strong>{{ message.sender.username }}:</strong> {{ message.content }} <em>{{ message.timestamp }}</em>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <input id="chat-message-input" type="text" size="100" placeholder="Type your message here..."><br>
+</body>
+</html>
